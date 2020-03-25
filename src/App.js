@@ -9,43 +9,54 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {TextField} from "@material-ui/core";
 import axios from 'axios';
 import QRcode from 'qrcode.react';
+import { Text } from 'react';
+
 
 // import logo from "./"; {/*add streetcred logo*/}
 
 axios.defaults.baseURL = 'http://localhost:3002/';
 export class App extends Component {
     state = {
-            name: "",
-            title: "",
-            org: "",
-            phone: "",
-            email: "",
+            // name: "",
+            // title: "",
+            // org: "",
+            // phone: "",
+            // email: "",
 
         qr_open: false,
         qr_placeholder: "",
         invite_url: "",
     };
 
-    onIssue = () => {
-        const bizCard = {
-            name: this.state.name, 
-            title: this.state.title,
-            org: this.state.org,
-            phone: this.state.phone,
-            email: this.state.email
-        }  
-        console.log(bizCard)
-        axios.post('/api/issue', bizCard).then((response) => {
+    componentDidMount() {
+        axios.post('/api/issue').then((response) => {
             console.log(response);
             this.setState({invite_url: "https://web.cloud.streetcred.id/link/?c_i=" + response.data.invite_url});
         });
         this.setState({
-          qr_open: true,
+          qr_open: false,
           qr_placeholder: this.state,
         })
+      }
+
+    onIssue = () => {
+        // const bizCard = {
+        //     name: this.state.name, 
+        //     title: this.state.title,
+        //     org: this.state.org,
+        //     phone: this.state.phone,
+        //     email: this.state.email
+        // }  
+        // console.log(bizCard)
+        
     }
+    
+
+  
 
     render() {
+   
+    
        const card = this.state
       return (
             <div >
@@ -54,16 +65,13 @@ export class App extends Component {
                     <Toolbar style={{backgroundColor: '#812bff'}}>
                         <img style={{}}/>
                         <Typography variant="h6"> 
-                            Streetcred API Demo
+                            Ainshams University 
                         </Typography>
-                        <div style={{flexGrow: 1}}></div>
-                        <Button href="https://www.streetcred.id" style={{color: 'white'}}>
-                            Streetcred
-                        </Button> 
+                        <div style={{flexGrow: 1}}></div> 
                     </Toolbar>
                 </AppBar>
 
-                 {/* The Paper */}
+                 {/* The Paper
                  <div style={{display: 'flex', justifyContent: 'center'}}>
                     <Paper style={{display: 'flex', maxWidth: '600px', width: '100%', margin: '40px', padding: 40}}>
                         <div style={{display: 'flex', padding: '24px 24px', flexDirection: 'column', width: '100%'}}>
@@ -121,7 +129,25 @@ export class App extends Component {
                             </Button>
                         </div>
                     </Paper>
-                </div>
+                </div> */}
+                <div style ={{paddingLeft:300, paddingTop:24}}>
+                  <div style={{ marginBottom : 20}}>
+                                <Typography variant="h4"  color="black"   style={{flexGrow: 1}}>
+                                   <b>Connect to Ainshams University</b> 
+                                </Typography>
+                                </div>
+
+                 <div style={{marginBottom : 20}}>
+
+                                <Typography variant="body2"  color="textPrimary"  style={{flexGrow: 1}}>
+                                Scan the QR code with your mobile agent from your phone to form a connection with Ainshams University. 
+                                </Typography>
+                                <QRcode size="200" value={this.state.invite_url} style={{margin: "0 auto", padding: "10px"}} />
+                                
+                            </div>
+                            </div> 
+                            
+                               
                 <Dialog open={this.state.qr_open} onClose={() => this.setState({qr_open: false})}>
                     <DialogTitle style={{width: "300px"}}>Scan this QR code</DialogTitle>
                     <QRcode size="200" value={this.state.invite_url} style={{margin: "0 auto", padding: "10px"}} />
