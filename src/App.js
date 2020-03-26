@@ -1,71 +1,45 @@
 import React, { Component } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
-import Paper from '@material-ui/core/Paper';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import {TextField} from "@material-ui/core";
 import axios from 'axios';
 import QRcode from 'qrcode.react';
-import { Text } from 'react';
+import "./styles.css";
+import home from "./home.jpeg"
 
-
-// import logo from "./"; {/*add streetcred logo*/}
 
 axios.defaults.baseURL = 'http://localhost:3002/';
 export class App extends Component {
     state = {
-            // name: "",
-            // title: "",
-            // org: "",
-            // phone: "",
-            // email: "",
-
         qr_open: false,
         qr_placeholder: "",
         invite_url: "",
     };
 
     componentDidMount() {
-        axios.post('/api/issue').then((response) => {
-            console.log(response);
-            this.setState({invite_url: "https://web.cloud.streetcred.id/link/?c_i=" + response.data.invite_url});
-        });
-        this.setState({
-          qr_open: false,
-          qr_placeholder: this.state,
-        })
+        // axios.post('/api/issue').then((response) => {
+        //     console.log(response);
+        //     this.setState({invite_url: "https://web.cloud.streetcred.id/link/?c_i=" + response.data.invite_url});
+        // });
+        // this.setState({
+        //   qr_open: false,
+        //   qr_placeholder: this.state,
+        // })
       }
-
-    onIssue = () => {
-        // const bizCard = {
-        //     name: this.state.name, 
-        //     title: this.state.title,
-        //     org: this.state.org,
-        //     phone: this.state.phone,
-        //     email: this.state.email
-        // }  
-        // console.log(bizCard)
-        
-    }
-    
-
   
 
     render() {
-   
-    
+
        const card = this.state
       return (
             <div >
                 {/* The AppBar */}
                 <AppBar position="static">
-                    <Toolbar style={{backgroundColor: '#812bff'}}>
+                    <Toolbar style={{paddingLeft:300, backgroundColor: 'primary'}}>
                         <img style={{}}/>
-                        <Typography variant="h6"> 
-                            Ainshams University 
+                        <Typography variant="h4"> 
+                            Ain Shams University 
                         </Typography>
                         <div style={{flexGrow: 1}}></div> 
                     </Toolbar>
@@ -130,28 +104,43 @@ export class App extends Component {
                         </div>
                     </Paper>
                 </div> */}
-                <div style ={{paddingLeft:300, paddingTop:24}}>
-                  <div style={{ marginBottom : 20}}>
+
+                <div >
+                <img
+                   // style={{flex:1, height: undefined, width: 100%}}
+                    className = "home"
+                    src={home}
+                />
+                </div>
+                <div style ={{paddingLeft:300, paddingTop:30}}>
+                    <div style={{ marginBottom : 20}}>
                                 <Typography variant="h4"  color="black"   style={{flexGrow: 1}}>
                                    <b>Connect to Ainshams University</b> 
                                 </Typography>
-                                </div>
+                    </div>
 
-                 <div style={{marginBottom : 20}}>
+                    <div style={{marginBottom : 20}}>
 
-                                <Typography variant="body2"  color="textPrimary"  style={{flexGrow: 1}}>
-                                Scan the QR code with your mobile agent from your phone to form a connection with Ainshams University. 
+                                <Typography variant="h6"  color="textPrimary"  style={{flexGrow: 1}}>
+                                First you need to scan the QR code with your mobile agent from your phone to form a connection with Ainshams University. 
                                 </Typography>
                                 <QRcode size="200" value={this.state.invite_url} style={{margin: "0 auto", padding: "10px"}} />
                                 
-                            </div>
-                            </div> 
-                            
-                               
-                <Dialog open={this.state.qr_open} onClose={() => this.setState({qr_open: false})}>
-                    <DialogTitle style={{width: "300px"}}>Scan this QR code</DialogTitle>
-                    <QRcode size="200" value={this.state.invite_url} style={{margin: "0 auto", padding: "10px"}} />
-                </Dialog>
+                    </div>
+
+                    <div style={{marginBottom : 20}}>
+
+                        <Typography variant="h6"  color="textPrimary"  style={{flexGrow: 1}}>
+                        Once you have accepted the connection from your mobile agent, click the button below to get you transcript!
+                        </Typography>
+                        <Button size ="large" variant="contained" color="primary">
+                            Get Transcript
+                        </Button>
+                    </div>
+
+
+                    
+                </div> 
             </div>
         )
     }
