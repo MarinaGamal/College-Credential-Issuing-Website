@@ -70,11 +70,52 @@ app.post('/api/issue', cors(), async function (req, res) {
     res.status(200).send({ invite_url: invite.invitation });
 });
 
+app.post('/api/offer', cors(), async function (req, res) {
+    const Definition = await createCertificateCredentialDefinition();
+    const attribs = JSON.stringify(req.body);
+    var newDefinitionId=Definition.definitionId;
+    cache.add(Definition.definitionId, attribs);
+    console.log(newDefinitionId+"Definition")
+    const offer= await createCertificateOffer();
+
+   // cache.add(invite.connectionId, attribs);
+    //res.status(200).send({ invite_url: invite.invitation });
+});
+
 
 const getInvite = async () => {
     try {
         var result = await client.createConnection({
             connectionInvitationParameters: {}
+        });
+        return result;
+    } catch (e) {
+        console.log(e.message || e.toString());
+    }
+} 
+
+const createCertificateCredentialDefinition = async () => {
+    try {
+        var credentialDefinition = await client.createCredentialDefinition({
+            credentialDefinitionFromSchemaParameters: {
+                name: "Computer Bachelor Degree",
+                version: "1.0",
+                attrNames: ["Name", "GPA", "Year","Type"],
+                supportRevocation: false,
+                tag: "19971997marinaboda"
+            }
+        });
+        
+        return result;
+    } catch (e) {
+        console.log(e.message || e.toString());
+    }
+}
+const createCertificateOffer = async () => {
+    try {
+        var credentialOffer = await client.createCredential({
+            definitionId: credentialDefinition.definitionId,
+            connectionId: connection.connectionId
         });
         return result;
     } catch (e) {
