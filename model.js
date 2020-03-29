@@ -13,6 +13,13 @@ class Model {
     remove(key){
         delete this._data[key];
     }
+
+    list(){
+      //for(let i =0;i<this.data.length;i++){
+        console.log(this.data);
+      ///}
+        
+    }
 }
   
 const model = new Model();

@@ -3,6 +3,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Button from '@material-ui/core/Button';
+//import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import QRcode from 'qrcode.react';
 import "./styles.css";
@@ -18,25 +19,45 @@ export class App extends Component {
     };
 
     componentDidMount() {
-        // axios.post('/api/issue').then((response) => {
+        axios.post('/api/issue').then((response) => {
+            console.log(response);
+            this.setState({invite_url: "https://web.cloud.streetcred.id/link/?c_i=" + response.data.invite_url});
+        });
+        this.setState({
+          qr_open: false,
+          qr_placeholder: this.state,
+        })
+      } 
+
+      onGetTranscript = () => {
+        // const bizCard = {
+        //     Name: "Mohammed Said", 
+        //     GPA: "2.9",
+        //     Year: "2020",
+        //     Type: "bachelor",
+        // }  
+        // console.log(bizCard)
+        // axios.post('/api/definition').then((response) => {
         //     console.log(response);
-        //     this.setState({invite_url: "https://web.cloud.streetcred.id/link/?c_i=" + response.data.invite_url});
+           
         // });
-        // this.setState({
-        //   qr_open: false,
-        //   qr_placeholder: this.state,
-        // })
-      }
+        axios.post('/api/offer').then((response) => {
+            console.log(response);
+           
+        });
+        
+    }
   
 
     render() {
 
        const card = this.state
       return (
-            <div >
+          
+            <div className='myBackgrounds' >
                 {/* The AppBar */}
                 <AppBar position="static">
-                    <Toolbar style={{paddingLeft:300, backgroundColor: 'primary'}}>
+                    <Toolbar style={{paddingLeft:300, backgroundColor: 'primary',}}>
                         <img style={{}}/>
                         <Typography variant="h4"> 
                             Ain Shams University 
@@ -133,7 +154,7 @@ export class App extends Component {
                         <Typography variant="h6"  color="textPrimary"  style={{flexGrow: 1}}>
                         Once you have accepted the connection from your mobile agent, click the button below to get you transcript!
                         </Typography>
-                        <Button size ="large" variant="contained" color="primary">
+                        <Button size ="large" variant="contained" color="primary" onClick={() => this.onGetTranscript()}>
                             Get Transcript
                         </Button>
                     </div>

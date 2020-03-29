@@ -21,6 +21,7 @@ app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '/build/index.html'));
 });
 
+
 // WEBHOOK ENDPOINT
 // app.post('/webhook', async function (req, res) {
 //     try {
@@ -66,18 +67,95 @@ app.post('/api/issue', cors(), async function (req, res) {
     const invite = await getInvite();
     const attribs = JSON.stringify(req.body);
 
-    cache.add(invite.connectionId, attribs);
+    cache.add("connectionId", invite.connectionId);
+    cache.list();
     res.status(200).send({ invite_url: invite.invitation });
+});
+
+// app.post('/api/definition', cors(), async function (req, res) {
+
+//     const Definition = await createCertificateCredentialDefinition();
+//     const attribs = JSON.stringify(req.body);
+//     //console.log(Definition.definitionId+"Definition")
+//     // //var newDefinitionId=Definition.definitionId;
+//    // cache.add("definitionId", Definition.definitionId);
+//     cache.list();
+//    // const offer= await createCertificateOffer();
+
+//     //cache.add("credentialId", offer.credentialId);
+//     //res.status(200).send({ invite_url: invite.invitation });
+// }); 
+
+app.post('/api/offer', cors(), async function (req, res) {
+
+    const offer= await createCertificateOffer();
+    //cache.add("credentialId", offer.credentialId);
+    //res.status(200).send({ invite_url: invite.invitation });
 });
 
 
 const getInvite = async () => {
     try {
         var result = await client.createConnection({
-            connectionInvitationParameters: {}
+            connectionInvitationParameters: {"name": "3ayz amot"}
         });
         return result;
     } catch (e) {
+        console.log(e.message || e.toString());
+    }
+} 
+
+const createCertificateCredentialDefinition = async () => {
+    try {
+        var credentialDefinition = await client.createCredentialDefinition({
+            credentialDefinitionFromSchemaParameters: {
+                name: "Computer Bachelor Degree",
+                version: "1.0",
+                attributes: ["Name", "GPA", "Year","Type"],
+                supportRevocation: false,
+                tag: "19971997marinaboda"
+            }
+        });
+        //console.log("OPaAAA" +result)
+        return result;
+    } catch (e) {
+        console.log("OPa"+cache.get("definitionId"))
+        console.log(e.message || e.toString());
+    }
+}
+const createCertificateOffer = async () => {
+    try {
+        console.log("hi"+cache.get("definitionId"),)
+        var credentialOffer = await client.createCredential({
+            credentialOfferParameters:{
+            definitionId: "Mp2F7q7czjX3MjwMQMNLhB:3:CL:86695:19971997marinaboda",
+            connectionId: cache.get("connectionId")
+            }
+        });
+        return result;
+    } catch (e) {
+        console.log("OPa 2"+cache.get("connectionId"))
+        console.log(e.message || e.toString());
+    }
+}
+
+const createCertificateSchema= async () => {
+    try {
+        var credentialOffer = await client.createSchema({
+            schemaParameters: {
+                name: "Employee Badge",
+                version: "1.0",
+                attrNames: [
+                    "Name",
+                    "GPA",
+                    "Year",
+                    "Type"
+                ]
+            }
+        });
+        return result;
+    } catch (e) {
+        console.log("OPa 2")
         console.log(e.message || e.toString());
     }
 }
