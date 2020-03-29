@@ -37,8 +37,12 @@ export class App extends Component {
         //     Type: "bachelor",
         // }  
         // console.log(bizCard)
+        // axios.post('/api/definition').then((response) => {
+        //     console.log(response);
+           
+        // });
         axios.post('/api/offer').then((response) => {
-            
+            console.log(response);
            
         });
         
