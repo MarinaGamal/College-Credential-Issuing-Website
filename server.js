@@ -38,23 +38,23 @@ app.post('/webhook', async function (req, res) {
             // }
             // await client.createCredential(params);
         }
-        else if (req.body.message_type === 'credential_request') {
-                                console.log("cred request notif");
-
-            const attribs = cache.get(req.body.data.ConnectionId)
-            if (attribs) {
-                var param_obj = JSON.parse(attribs);
-                // const params = {
-                //     values: {
-                //         "Full Name": param_obj["name"],
-                //         "Title": param_obj["title"],
-                //         "Company Name": param_obj["org"],
-                //         "Phone Number": param_obj["phone"],
-                //         "Email": param_obj["email"]
-                //     }
-                // }
-                // await client.issueCredential(req.body.object_id, params);
-            }
+        else if (req.body.message_type === 'credential_request') {    
+            console.log("cred request notif");
+                    
+            //const attribs = cache.get(req.body.data.ConnectionId)
+            //if (attribs) {
+                //var param_obj = JSON.parse(attribs);
+                const params = {
+                values: {
+                   "Name" : "Marina Gamal Elias ",
+                    "GPA": "4.0",
+                    "Year" : "2020" ,
+                    "Type": "Bachelor Dergree"
+                  }
+                }
+                
+                 await client.issueCredential("e9201be2-60b4-4406-87d8-8d246b5af5b4", params);
+            //}
         }
     }
     catch (e) {
@@ -89,8 +89,8 @@ app.post('/api/issue', cors(), async function (req, res) {
 app.post('/api/offer', cors(), async function (req, res) {
 
     const offer= await createCertificateOffer();
-    //cache.add("credentialId", offer.credentialId);
-    //res.status(200).send({ invite_url: invite.invitation });
+    cache.add("credentialId", offer.credentialId);
+    // res.status(200).send({ invite_url: invite.invitation });
 });
 
 
@@ -113,7 +113,7 @@ const createCertificateCredentialDefinition = async () => {
                 version: "1.0",
                 attributes: ["Name", "GPA", "Year","Type"],
                 supportRevocation: false,
-                tag: "19971997marinaboda"
+                tag: "19971997test1aaaaa"
             }
         });
         //console.log("OPaAAA" +result)
@@ -128,7 +128,7 @@ const createCertificateOffer = async () => {
         console.log("hi"+cache.get("definitionId"),)
         var credentialOffer = await client.createCredential({
             credentialOfferParameters:{
-            definitionId: "Mp2F7q7czjX3MjwMQMNLhB:3:CL:86695:19971997marinaboda",
+            definitionId: "Mp2F7q7czjX3MjwMQMNLhB:3:CL:87098:marinaandbodanadmohammed",
             connectionId: cache.get("connectionId")
             }
         });
