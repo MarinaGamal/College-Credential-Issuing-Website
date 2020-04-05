@@ -39,21 +39,27 @@ app.post('/webhook', async function (req, res) {
             // await client.createCredential(params);
         }
         else if (req.body.message_type === 'credential_request') {    
-            console.log("cred request notif");
-                    
+            console.log("cred request notif ");
+
             //const attribs = cache.get(req.body.data.ConnectionId)
             //if (attribs) {
                 //var param_obj = JSON.parse(attribs);
-                const params = {
+                var params = {
                 values: {
-                   "Name" : "Marina Gamal Elias ",
+                   "Name" : "Marina Gamal Elias",
                     "GPA": "4.0",
                     "Year" : "2020" ,
                     "Type": "Bachelor Dergree"
                   }
                 }
                 
-                 await client.issueCredential("e9201be2-60b4-4406-87d8-8d246b5af5b4", params);
+                 await client.issueCredential(offer.credentialId,{
+                    body: {
+                        "Name" : "Marina Gamal Elias",
+                        "GPA": "4.0",
+                        "Year" : "2020" ,
+                        "Type": "Bachelor Dergree"}
+                });
             //}
         }
     }
@@ -90,6 +96,7 @@ app.post('/api/offer', cors(), async function (req, res) {
 
     const offer= await createCertificateOffer();
     cache.add("credentialId", offer.credentialId);
+    cache.add("offer",offer);
     // res.status(200).send({ invite_url: invite.invitation });
 });
 
@@ -97,7 +104,7 @@ app.post('/api/offer', cors(), async function (req, res) {
 const getInvite = async () => {
     try {
         var result = await client.createConnection({
-            connectionInvitationParameters: {"name": "3ayz amot"}
+            connectionInvitationParameters: {"name": "Ain Shams University"}
         });
         return result;
     } catch (e) {
@@ -128,11 +135,11 @@ const createCertificateOffer = async () => {
         console.log("hi"+cache.get("definitionId"),)
         var credentialOffer = await client.createCredential({
             credentialOfferParameters:{
-            definitionId: "Mp2F7q7czjX3MjwMQMNLhB:3:CL:87098:marinaandbodanadmohammed",
+            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:87374:19971997test1aaaaa",
             connectionId: cache.get("connectionId")
             }
         });
-        return result;
+        return credentialOffer;
     } catch (e) {
         console.log("OPa 2"+cache.get("connectionId"))
         console.log(e.message || e.toString());
