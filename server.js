@@ -40,6 +40,8 @@ app.post('/webhook', async function (req, res) {
         }
         else if (req.body.message_type === 'credential_request') {    
             console.log("cred request notif ");
+            console.log(cache.get("credentialId"));
+            console.log(cache.get("connectionId"));
 
             //const attribs = cache.get(req.body.data.ConnectionId)
             //if (attribs) {
@@ -53,7 +55,7 @@ app.post('/webhook', async function (req, res) {
                   }
                 }
                 
-                 await client.issueCredential(offer.credentialId,{
+                 await client.issueCredential(cache.get("credentialId"),{
                     body: {
                         "Name" : "Marina Gamal Elias",
                         "GPA": "4.0",
@@ -95,8 +97,9 @@ app.post('/api/issue', cors(), async function (req, res) {
 app.post('/api/offer', cors(), async function (req, res) {
 
     const offer= await createCertificateOffer();
+    console.log(offer.credentialId+"hena");
     cache.add("credentialId", offer.credentialId);
-    cache.add("offer",offer);
+    //cache.add("offer",offer);
     // res.status(200).send({ invite_url: invite.invitation });
 });
 
@@ -135,7 +138,7 @@ const createCertificateOffer = async () => {
         console.log("hi"+cache.get("definitionId"),)
         var credentialOffer = await client.createCredential({
             credentialOfferParameters:{
-            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:87374:19971997test1aaaaa",
+            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:87512:testing123366",
             connectionId: cache.get("connectionId")
             }
         });
