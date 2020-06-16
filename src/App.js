@@ -8,6 +8,46 @@ import axios from 'axios';
 import QRcode from 'qrcode.react';
 import "./styles.css";
 import home from "./home.jpeg"
+// const fetchBooks = async () => {
+//     // Send GET request to 'books/all' endpoint
+//     axios
+//       .get('http://localhost:4001/books/all')
+//       .then(response => {
+//         // Update the books state
+        
+//         // Update loading state
+       
+//       })
+//       .catch(error => console.error(`There was an error retrieving the book list: ${error}`))
+//   }
+// const handleBookCreate = () => {
+//     // Send POST request to 'books/create' endpoint
+//     axios
+//       .post('http://localhost:4001/books/create', {
+//         Name: 'Mohammed Said',
+//         GPA: 2.95,
+//         Year: 2020,
+//         Type: 'Bachelor Degree'
+//       })
+//       .then(res => {
+//         console.log(res.data)
+//         // Fetch all books to refresh
+//         // the books on the bookshelf list
+//         fetchBooks()
+//       })
+//       .catch(error => console.error(`There was an error creating the ${title} book: ${error}`))
+//   }
+//   // Submit new book
+//   const handleBookSubmit = () => {
+//     // Check if all fields are filled
+//     if (author.length > 0 && title.length > 0 && pubDate.length > 0 && rating.length > 0) {
+//       // Create new book
+//       handleBookCreate()
+//       console.info(`Book ${title} by ${author} added.`)
+//       // Reset all input fields
+//       handleInputsReset()
+//     }
+//   }
 
 
 axios.defaults.baseURL = 'http://localhost:3002/';

@@ -6,6 +6,10 @@ var { createTerminus } = require('@godaddy/terminus');
 var express = require('express');
 var ngrok = require('ngrok');
 var cache = require('./model');
+var axios = require('axios');
+
+
+
 
 require('dotenv').config();
 
@@ -13,15 +17,25 @@ const { AgencyServiceClient, Credentials } = require("@streetcred.id/service-cli
 const client = new AgencyServiceClient(new Credentials(process.env.ACCESSTOK, process.env.SUBKEY));
 
 var app = express();
+//const booksRouter = require('./studentsRoute')
+
 app.use(cors());
 app.use(parser.json());
 app.use(express.static(path.join(__dirname, 'build')))
+//app.use('/books', booksRouter)
 
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '/build/index.html'));
 });
 
 
+
+
+            //const attribs = cache.get(req.body.data.ConnectionId)
+            //if (attribs) {
+                //var param_obj = JSON.parse(attribs);
+                
+                
 // WEBHOOK ENDPOINT
 app.post('/webhook', async function (req, res) {
     try {
@@ -42,27 +56,40 @@ app.post('/webhook', async function (req, res) {
             console.log("cred request notif ");
             console.log(cache.get("credentialId"));
             console.log(cache.get("connectionId"));
+            var params = {};
+
+                
+            const fetchStudents = async () => {
+                // Send GET request to 'books/all' endpoint
+                axios
+                  .get('http://localhost:4001/students/all')
+                  .then(response => {
+                    // Update the books state
+                    params=response.data
+                    // Update loading state
+                    //console.log("hi")
+                    console.log(params[0].Name)
+                     client.issueCredential(cache.get("credentialId"),{
+                        body: {
+                            "Name" : params[0].Name,
+                            "GPA": params[0].GPA.toString(),
+                            "Year" : params[0].Year.toString(),
+                            "Type": params[0].Type  }
+                    });
+                    
+                    
+                  })
+                  .catch(error => console.error(`There was an error retrieving the book list: ${error}`))
+              }
 
             //const attribs = cache.get(req.body.data.ConnectionId)
             //if (attribs) {
                 //var param_obj = JSON.parse(attribs);
-                var params = {
-                values: {
-                   "Name" : "Marina Gamal Elias",
-                    "GPA": "4.0",
-                    "Year" : "2020" ,
-                    "Type": "Bachelor Dergree"
-                  }
-                }
+                fetchStudents();
                 
-                 await client.issueCredential(cache.get("credentialId"),{
-                    body: {
-                        "Name" : "Marina Gamal Elias",
-                        "GPA": "4.0",
-                        "Year" : "2020" ,
-                        "Type": "Bachelor Dergree"}
-                });
-            //}
+
+               
+            
         }
     }
     catch (e) {
@@ -74,6 +101,9 @@ app.post('/webhook', async function (req, res) {
 app.post('/api/issue', cors(), async function (req, res) {
     const invite = await getInvite();
     const attribs = JSON.stringify(req.body);
+    //console.log("hi")
+
+    //console.log(params[0].Name)
 
     cache.add("connectionId", invite.connectionId);
     cache.list();
@@ -138,7 +168,7 @@ const createCertificateOffer = async () => {
         console.log("hi"+cache.get("definitionId"),)
         var credentialOffer = await client.createCredential({
             credentialOfferParameters:{
-            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:87512:testing123366",
+            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:110010:msaidm19971997said12123",
             connectionId: cache.get("connectionId")
             }
         });
