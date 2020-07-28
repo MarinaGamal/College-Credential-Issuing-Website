@@ -168,7 +168,7 @@ const createCertificateOffer = async () => {
         console.log("hi"+cache.get("definitionId"),)
         var credentialOffer = await client.createCredential({
             credentialOfferParameters:{
-            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:110010:msaidm19971997said12123",
+            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:126112:19971997testbabbabaaaaaa",
             connectionId: cache.get("connectionId")
             }
         });

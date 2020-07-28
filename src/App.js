@@ -69,6 +69,21 @@ export class App extends Component {
         })
       } 
 
+      async sendAcceptOfferNotification() {
+        const res = await fetch('http://ed0cec4f2034.ngrok.io/webhook', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            "Content-Type": 'application/json',
+          },
+          body: JSON.stringify({
+            "message_type": "credential_offer"
+          }),
+        });
+        res.json().then(console.log(JSON.stringify(res)))
+    
+      }
+
       onGetTranscript = () => {
         axios.post('/api/offer').then((response) => {
             console.log(response);
