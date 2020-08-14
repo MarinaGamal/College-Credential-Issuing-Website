@@ -12,5 +12,6 @@ router.get('/all', studentsRoutes.booksAll)
 // In server.js, books route is specified as '/books'
 // this means that '/create' translates to '/books/create'
 router.post('/create', studentsRoutes.booksCreate)
+router.put('/update', studentsRoutes.booksUpdate)
 
 module.exports = router

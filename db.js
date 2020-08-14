@@ -14,7 +14,7 @@ const knex = require('knex')({
 knex.schema
   // Make sure no "books" table exists
   // before trying to create new
-  .hasTable('students')
+  .hasTable('newStudents')
     .then((exists) => {
       if (!exists) {
         // If no "books" table exists
@@ -22,12 +22,14 @@ knex.schema
         // "pubDate" and "rating" columns
         // and use "id" as a primary identification
         // and increment "id" with every new record (book)
-        return knex.schema.createTable('students', (table)  => {
+        return knex.schema.createTable('newStudents', (table)  => {
           table.increments('id').primary()
           table.string('Name')
           table.integer('GPA')
           table.integer('Year')
           table.string('Type')
+          table.boolean('MasterDegree')
+          table.integer('MasterDegreeYear')
         })
         .then(() => {
           // Log success message
@@ -47,8 +49,10 @@ knex.schema
     })
 // Just for debugging purposes:
 // Log all data in "books" table
-knex.select('*').from('students')
+knex.select('*').from('newStudents')
   .then(data => console.log('data:', data))
   .catch(err => console.log(err))
+
+  
 // Export the database
 module.exports = knex

@@ -7,50 +7,57 @@ import axios from 'axios';
 import QRcode from 'qrcode.react';
 import "./styles.css";
 import home from "./home.jpeg"
-// const fetchBooks = async () => {
-//     // Send GET request to 'books/all' endpoint
-//     axios
-//       .get('http://localhost:4001/books/all')
-//       .then(response => {
-//         // Update the books state
+import {BrowserRouter as Router,Link } from 'react-router-dom';
+import Route from 'react-router-dom/Route'
+import postGradute, { postGraduate } from "./postGraduate"
+const fetchBooks = async () => {
+    // Send GET request to 'books/all' endpoint
+    axios
+      .get('http://localhost:4001/books/all')
+      .then(response => {
+        // Update the books state
         
-//         // Update loading state
+        // Update loading state
        
-//       })
-//       .catch(error => console.error(`There was an error retrieving the book list: ${error}`))
-//   }
-// const handleBookCreate = () => {
-//     // Send POST request to 'books/create' endpoint
-//     axios
-//       .post('http://localhost:4001/books/create', {
-//         Name: 'Mohammed Said',
-//         GPA: 2.95,
-//         Year: 2020,
-//         Type: 'Bachelor Degree'
-//       })
-//       .then(res => {
-//         console.log(res.data)
-//         // Fetch all books to refresh
-//         // the books on the bookshelf list
-//         fetchBooks()
-//       })
-//       .catch(error => console.error(`There was an error creating the ${title} book: ${error}`))
-//   }
-//   // Submit new book
-//   const handleBookSubmit = () => {
-//     // Check if all fields are filled
-//     if (author.length > 0 && title.length > 0 && pubDate.length > 0 && rating.length > 0) {
-//       // Create new book
-//       handleBookCreate()
-//       console.info(`Book ${title} by ${author} added.`)
-//       // Reset all input fields
-//       handleInputsReset()
-//     }
-//   }
+      })
+      .catch(error => console.error(`There was an error retrieving the book list: ${error}`))
+  }
+const handleBookCreate = () => {
+  console.log("insterded")
+    // Send POST request to 'books/create' endpoint
+    axios
+      .post('http://localhost:4001/students/create', {
+        Name: 'Mohammed Said',
+        GPA: 2.95,
+        Year: 2018,
+        Type: 'Bachelor Degree',
+        MasterDegree: false ,
+        MasterDegreeYear: 2020
+      })
+      .then(res => {
+        console.log(res.data)
+        // Fetch all books to refresh
+        // the books on the bookshelf list
+        fetchBooks()
+      })
+      //.catch(error => console.error(`There was an error creating the ${title} book: ${error}`))
+  }
+  // Submit new book
+  const handleBookSubmit = () => {
+    // Check if all fields are filled
+    //if (author.length > 0 && title.length > 0 && pubDate.length > 0 && rating.length > 0) {
+      // Create new book
+     
+      //console.info(`Book ${title} by ${author} added.`)
+      // Reset all input fields
+     // handleInputsReset()
+    //}
+  }
 
 axios.defaults.baseURL = 'http://localhost:3002/';
 export class App extends Component {
      
+  
     state = {
         qr_open: false,
         qr_placeholder: "",
@@ -59,6 +66,7 @@ export class App extends Component {
     };
 
     componentDidMount() {
+      
         axios.post('/api/issue').then((response) => {
             console.log(response);
             this.setState({invite_url: "https://web.cloud.streetcred.id/link/?c_i=" + response.data.invite_url});
@@ -67,6 +75,7 @@ export class App extends Component {
           qr_open: false,
           qr_placeholder: this.state,
         })
+        
       } 
 
       async sendAcceptOfferNotification() {
@@ -91,16 +100,27 @@ export class App extends Component {
          this.setState({ disabled: true });
       }
 
+      onPostGradute = () => {
+        console.log("redirect")
+        
+      }
+
     render() {
       return (
+        <Router>
+          {/* <Route path="/postGradute" exact  component={postGraduate}/> */}
             <div className='myBackgrounds' >
                 {/* The AppBar */}
                 <AppBar position="static">
                     <Toolbar style={{paddingLeft:300, backgroundColor: 'primary',}}>
                         <img style={{}}/>
-                        <Typography variant="h4"> 
+                        <Typography style ={{paddingRight:300}} variant="h4"> 
                             Ain Shams University 
                         </Typography>
+                        {/* <Button  size ="large" variant="contained" color="defult" onClick={() => this.onPostGradute() } >
+                            For Post Graduteds
+                        </Button> */}
+                        <Link to="/postGraduate" style={{ textDecoration: 'none' ,color:"white" }}>Post Graduate</Link>
                         <div style={{flexGrow: 1}}></div> 
                     </Toolbar>
                 </AppBar>
@@ -136,6 +156,7 @@ export class App extends Component {
                     </div>         
                 </div> 
             </div>
+        </Router>
         )
     }    
 }
