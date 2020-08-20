@@ -55,7 +55,27 @@ const handleBookCreate = () => {
   }
 
 axios.defaults.baseURL = 'http://localhost:3002/';
+
+const sendCredOfferNotification = async  ()  =>  {
+  const res = await fetch('http://2af88e4b8abf.ngrok.io/webhook', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      "Content-Type": 'application/json',
+    },
+    body: JSON.stringify({
+      "message_type": "Cred_offer"
+    }),
+  });
+  res.json().then(console.log(JSON.stringify(res)))
+
+}
+
 export class App extends Component {
+
+   
+
+ 
      
   
     state = {
@@ -76,27 +96,15 @@ export class App extends Component {
           qr_placeholder: this.state,
         })
         
-      } 
-
-      async sendAcceptOfferNotification() {
-        const res = await fetch('http://ed0cec4f2034.ngrok.io/webhook', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            "Content-Type": 'application/json',
-          },
-          body: JSON.stringify({
-            "message_type": "credential_offer"
-          }),
-        });
-        res.json().then(console.log(JSON.stringify(res)))
-    
       }
 
       onGetTranscript = () => {
         axios.post('/api/offer').then((response) => {
             console.log(response);
          });
+
+         sendCredOfferNotification();
+         console.log("ana ba3at cred offer notifi")
          this.setState({ disabled: true });
       }
 

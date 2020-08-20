@@ -46,7 +46,7 @@ const updateBookCreate = () => {
 
  const  sendMasterDegreeNotification = async  ()  =>  {
   console.log("sending notfi")
-  const res = await fetch('http://66c99f3109ba.ngrok.io/webhook', {
+  const res = await fetch('http://2af88e4b8abf.ngrok.io/webhook', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

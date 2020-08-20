@@ -7,6 +7,8 @@ var express = require('express');
 var ngrok = require('ngrok');
 var cache = require('./model');
 var axios = require('axios');
+const fetch = require('node-fetch');
+
 
 
 
@@ -15,6 +17,7 @@ require('dotenv').config();
 
 const { AgencyServiceClient, Credentials } = require("@streetcred.id/service-clients");
 const client = new AgencyServiceClient(new Credentials(process.env.ACCESSTOK, process.env.SUBKEY));
+console.log(process.env.ACCESSTOK)
 
 var app = express();
 //const booksRouter = require('./studentsRoute')
@@ -34,23 +37,52 @@ app.get('*', function (req, res) {
             //const attribs = cache.get(req.body.data.ConnectionId)
             //if (attribs) {
                 //var param_obj = JSON.parse(attribs);
+
+const  sendConnectionNotification = async  ()  =>  {
+    console.log("sending notfi")
+    const res = await fetch('http://2af88e4b8abf.ngrok.io/webhook', {
+        method: 'POST',
+        headers: {
+        Accept: 'application/json',
+        "Content-Type": 'application/json',
+        },
+        body: JSON.stringify({
+        "message_type": "NewConnection"
+        }),
+    });
+
+
+    //res.json().then(console.log(JSON.stringify(res)))
+    
+    }
+
+    const  sendNewCredNotification = async  ()  =>  {
+        console.log("Sending New Cred notfi")
+        const res = await fetch('http://2af88e4b8abf.ngrok.io/webhook', {
+            method: 'POST',
+            headers: {
+            Accept: 'application/json',
+            "Content-Type": 'application/json',
+            },
+            body: JSON.stringify({
+            "message_type": "NewCred"
+            }),
+        });
+    //res.json().then(console.log(JSON.stringify(res)))
+    
+    }
                 
                 
 // WEBHOOK ENDPOINT
 app.post('/webhook', async function (req, res) {
+
+
     try {
         console.log("got webhook" + req + "   type: " + req.body.message_type);
         if (req.body.message_type === 'new_connection') {
                     console.log("new connection notif");
-
-            // var params =
-            // {
-            //     credentialOfferParameters: {
-            //         definitionId: process.env.CRED_DEF_ID,
-            //         connectionId: req.body.object_id
-            //     }
-            // }
-            // await client.createCredential(params);
+                    sendConnectionNotification()
+            
         }
         else if (req.body.message_type === 'credential_request') {    
             console.log("cred request notif ");
@@ -86,7 +118,7 @@ app.post('/webhook', async function (req, res) {
             //if (attribs) {
                 //var param_obj = JSON.parse(attribs);
                 fetchStudents();
-                
+                sendNewCredNotification();
 
                
             
@@ -168,7 +200,7 @@ const createCertificateOffer = async () => {
         console.log("hi"+cache.get("definitionId"),)
         var credentialOffer = await client.createCredential({
             credentialOfferParameters:{
-            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:126112:19971997testbabbabaaaaaa",
+            definitionId: "WqHxTAtrKbPsEqkhHDEJK:3:CL:135622:19971997testdasdasdsadasd",
             connectionId: cache.get("connectionId")
             }
         });
