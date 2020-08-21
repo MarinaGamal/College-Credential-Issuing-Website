@@ -8,6 +8,9 @@ import QRcode from 'qrcode.react';
 import "./styles.css";
 import home from "./home.jpeg"
 import { any } from 'bluebird';
+
+var ngrok = "http://8b75d5227710.ngrok.io"
+
 const fetchBooks = async () => {
     // Send GET request to 'books/all' endpoint
     axios
@@ -46,7 +49,7 @@ const updateBookCreate = () => {
 
  const  sendMasterDegreeNotification = async  ()  =>  {
   console.log("sending notfi")
-  const res = await fetch('http://2af88e4b8abf.ngrok.io/webhook', {
+  const res = await fetch(ngrok+ '/webhook', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

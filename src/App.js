@@ -8,8 +8,9 @@ import QRcode from 'qrcode.react';
 import "./styles.css";
 import home from "./home.jpeg"
 import {BrowserRouter as Router,Link } from 'react-router-dom';
-import Route from 'react-router-dom/Route'
-import postGradute, { postGraduate } from "./postGraduate"
+
+var ngrok = "http://8b75d5227710.ngrok.io"
+
 const fetchBooks = async () => {
     // Send GET request to 'books/all' endpoint
     axios
@@ -55,9 +56,9 @@ const handleBookCreate = () => {
   }
 
 axios.defaults.baseURL = 'http://localhost:3002/';
-
+//console.log(process.env.ngrok)
 const sendCredOfferNotification = async  ()  =>  {
-  const res = await fetch('http://2af88e4b8abf.ngrok.io/webhook', {
+  const res = await fetch(ngrok+'/webhook', {
     method: 'POST',
     headers: {
       Accept: 'application/json',

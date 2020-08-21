@@ -10,14 +10,12 @@ var axios = require('axios');
 const fetch = require('node-fetch');
 
 
-
-
-
 require('dotenv').config();
 
 const { AgencyServiceClient, Credentials } = require("@streetcred.id/service-clients");
 const client = new AgencyServiceClient(new Credentials(process.env.ACCESSTOK, process.env.SUBKEY));
-console.log(process.env.ACCESSTOK)
+// console.log(process.env.ACCESSTOK)
+ console.log(process.env.ngrok)
 
 var app = express();
 //const booksRouter = require('./studentsRoute')
@@ -40,7 +38,7 @@ app.get('*', function (req, res) {
 
 const  sendConnectionNotification = async  ()  =>  {
     console.log("sending notfi")
-    const res = await fetch('http://2af88e4b8abf.ngrok.io/webhook', {
+    const res = await fetch(process.env.ngrok+'/webhook', {
         method: 'POST',
         headers: {
         Accept: 'application/json',
@@ -58,7 +56,7 @@ const  sendConnectionNotification = async  ()  =>  {
 
     const  sendNewCredNotification = async  ()  =>  {
         console.log("Sending New Cred notfi")
-        const res = await fetch('http://2af88e4b8abf.ngrok.io/webhook', {
+        const res = await fetch(process.env.ngrok+'/webhook', {
             method: 'POST',
             headers: {
             Accept: 'application/json',
