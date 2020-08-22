@@ -8,9 +8,9 @@ It is aimed to complete the the "College Certificate Project on top of the Block
 
 ## To use this project you need to do the following:
 
-Edit the file called ".env-template" to ".env" and add the following in it:
+Create a file in your project called ".env" and add the following in it:
 
-ACCESSTOK='1EttW4CmYNfwUcv93z6Dbff54jp5i8OSg-Xt0ZCMns4' <br />                                                                     SUBKEY='d9cce2ec9adb4741b0b85279031d614b'  <br />  
+ACCESSTOK='DEoY7VS8s4k38xnclVCFdPWYASdZCKc2rufhLlsx4QU' <br />                                                                     SUBKEY='d9cce2ec9adb4741b0b85279031d614b'  <br />  
 
 #------------- Credential Definition ----------------- #       <br />                                                            CRED_DEF_ID='Mp2F7q7czjX3MjwMQMNLhB:3:CL:84162:Default'      <br />  
 
