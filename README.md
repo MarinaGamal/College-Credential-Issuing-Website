@@ -27,7 +27,7 @@ SKIP_PREFLIGHT_CHECK=true
     npm install .
     npm install i @streetcred.id/service-clients
     npm start
-    
+    Finally, go to the project's directory, open terminal and run nodde server.js
     
 ## Now you are ready to run the application:
 After running the wallet project, you just need to Scan the QR (conection invitation) with your mobile wallet and a connection will be established.
