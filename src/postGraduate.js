@@ -4,22 +4,17 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from "@material-ui/core/es/Typography/Typography";
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import QRcode from 'qrcode.react';
 import "./styles.css";
 import home from "./home.jpeg"
-import { any } from 'bluebird';
 
-var ngrok = "http://8b75d5227710.ngrok.io"
+var ngrok = "http://b42e2d162c0c.ngrok.io"
 
 const fetchBooks = async () => {
     // Send GET request to 'books/all' endpoint
     axios
       .get('http://localhost:4001/books/all')
       .then(response => {
-        // Update the books state
-        
-        // Update loading state
-       
+
       })
       .catch(error => console.error(`There was an error retrieving the book list: ${error}`))
   }
@@ -35,18 +30,8 @@ const updateBookCreate = () => {
       })
       //.catch(error => console.error(`There was an error creating the ${title} book: ${error}`))
   }
-//   // Submit new book
-//   const handleBookSubmit = () => {
-//     // Check if all fields are filled
-//     if (author.length > 0 && title.length > 0 && pubDate.length > 0 && rating.length > 0) {
-//       // Create new book
-//       handleBookCreate()
-//       console.info(`Book ${title} by ${author} added.`)
-//       // Reset all input fields
-//       handleInputsReset()
-//     }
-//   }
 
+  //sends notification to the application that a master degree is issued
  const  sendMasterDegreeNotification = async  ()  =>  {
   console.log("sending notfi")
   const res = await fetch(ngrok+ '/webhook', {
@@ -59,7 +44,6 @@ const updateBookCreate = () => {
       "message_type": "MasterDegree_offer"
     }),
   });
-  //res.json().then(console.log(JSON.stringify(res)))
 
 }
 axios.defaults.baseURL = 'http://localhost:3002/';
@@ -82,7 +66,7 @@ export class postGraduate extends Component {
         sendMasterDegreeNotification()
          this.setState({ disabled: true });
       }
-
+      //ui of post graduate page
     render() {
       return (
             <div className='postGradute' >

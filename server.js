@@ -18,12 +18,10 @@ const client = new AgencyServiceClient(new Credentials(process.env.ACCESSTOK, pr
  console.log(process.env.ngrok)
 
 var app = express();
-//const booksRouter = require('./studentsRoute')
 
 app.use(cors());
 app.use(parser.json());
 app.use(express.static(path.join(__dirname, 'build')))
-//app.use('/books', booksRouter)
 
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '/build/index.html'));
@@ -31,11 +29,7 @@ app.get('*', function (req, res) {
 
 
 
-
-            //const attribs = cache.get(req.body.data.ConnectionId)
-            //if (attribs) {
-                //var param_obj = JSON.parse(attribs);
-
+//send connection notification to the application when one is connected
 const  sendConnectionNotification = async  ()  =>  {
     console.log("sending notfi")
     const res = await fetch(process.env.ngrok+'/webhook', {
@@ -48,12 +42,9 @@ const  sendConnectionNotification = async  ()  =>  {
         "message_type": "NewConnection"
         }),
     });
-
-
-    //res.json().then(console.log(JSON.stringify(res)))
     
     }
-
+    //send credential notification to the application when one is issued
     const  sendNewCredNotification = async  ()  =>  {
         console.log("Sending New Cred notfi")
         const res = await fetch(process.env.ngrok+'/webhook', {
@@ -66,7 +57,6 @@ const  sendConnectionNotification = async  ()  =>  {
             "message_type": "NewCred"
             }),
         });
-    //res.json().then(console.log(JSON.stringify(res)))
     
     }
                 
@@ -77,27 +67,23 @@ app.post('/webhook', async function (req, res) {
 
     try {
         console.log("got webhook" + req + "   type: " + req.body.message_type);
-        if (req.body.message_type === 'new_connection') {
+        if (req.body.message_type === 'new_connection') { //send upon connecting
                     console.log("new connection notif");
                     sendConnectionNotification()
             
         }
-        else if (req.body.message_type === 'credential_request') {    
+        else if (req.body.message_type === 'credential_request') {     //upon receiving a notification to issue the credential
             console.log("cred request notif ");
             console.log(cache.get("credentialId"));
             console.log(cache.get("connectionId"));
             var params = {};
 
                 
-            const fetchStudents = async () => {
-                // Send GET request to 'books/all' endpoint
+            const fetchStudents = async () => { //fill data from database
                 axios
                   .get('http://localhost:4001/students/all')
                   .then(response => {
-                    // Update the books state
                     params=response.data
-                    // Update loading state
-                    //console.log("hi")
                     console.log(params[0].Name)
                      client.issueCredential(cache.get("credentialId"),{
                         body: {
@@ -111,10 +97,6 @@ app.post('/webhook', async function (req, res) {
                   })
                   .catch(error => console.error(`There was an error retrieving the book list: ${error}`))
               }
-
-            //const attribs = cache.get(req.body.data.ConnectionId)
-            //if (attribs) {
-                //var param_obj = JSON.parse(attribs);
                 fetchStudents();
                 sendNewCredNotification();
 
@@ -127,14 +109,11 @@ app.post('/webhook', async function (req, res) {
     }
 });
 
+//establishing connection
 //FRONTEND ENDPOINT
 app.post('/api/issue', cors(), async function (req, res) {
     const invite = await getInvite();
     const attribs = JSON.stringify(req.body);
-    //console.log("hi")
-
-    //console.log(params[0].Name)
-
     cache.add("connectionId", invite.connectionId);
     cache.list();
     res.status(200).send({ invite_url: invite.invitation });
@@ -154,16 +133,15 @@ app.post('/api/issue', cors(), async function (req, res) {
 //     //res.status(200).send({ invite_url: invite.invitation });
 // }); 
 
+//sends credential offer
 app.post('/api/offer', cors(), async function (req, res) {
 
     const offer= await createCertificateOffer();
     console.log(offer.credentialId+"hena");
     cache.add("credentialId", offer.credentialId);
-    //cache.add("offer",offer);
-    // res.status(200).send({ invite_url: invite.invitation });
 });
 
-
+//get new invitation url
 const getInvite = async () => {
     try {
         var result = await client.createConnection({
@@ -186,7 +164,6 @@ const createCertificateCredentialDefinition = async () => {
                 tag: "19971997test1aaaaa"
             }
         });
-        //console.log("OPaAAA" +result)
         return result;
     } catch (e) {
         console.log("OPa"+cache.get("definitionId"))

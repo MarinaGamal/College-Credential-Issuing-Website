@@ -9,7 +9,7 @@ import "./styles.css";
 import home from "./home.jpeg"
 import {BrowserRouter as Router,Link } from 'react-router-dom';
 
-var ngrok = "http://8b75d5227710.ngrok.io"
+var ngrok = "http://b42e2d162c0c.ngrok.io" //public url for connecting with the server
 
 const fetchBooks = async () => {
     // Send GET request to 'books/all' endpoint
@@ -43,20 +43,11 @@ const handleBookCreate = () => {
       })
       //.catch(error => console.error(`There was an error creating the ${title} book: ${error}`))
   }
-  // Submit new book
-  const handleBookSubmit = () => {
-    // Check if all fields are filled
-    //if (author.length > 0 && title.length > 0 && pubDate.length > 0 && rating.length > 0) {
-      // Create new book
-     
-      //console.info(`Book ${title} by ${author} added.`)
-      // Reset all input fields
-     // handleInputsReset()
-    //}
-  }
+
 
 axios.defaults.baseURL = 'http://localhost:3002/';
-//console.log(process.env.ngrok)
+
+//sends credential offer notification to the application
 const sendCredOfferNotification = async  ()  =>  {
   const res = await fetch(ngrok+'/webhook', {
     method: 'POST',
@@ -75,10 +66,6 @@ const sendCredOfferNotification = async  ()  =>  {
 export class App extends Component {
 
    
-
- 
-     
-  
     state = {
         qr_open: false,
         qr_placeholder: "",
@@ -87,7 +74,7 @@ export class App extends Component {
     };
 
     componentDidMount() {
-      
+
         axios.post('/api/issue').then((response) => {
             console.log(response);
             this.setState({invite_url: "https://web.cloud.streetcred.id/link/?c_i=" + response.data.invite_url});
@@ -98,7 +85,7 @@ export class App extends Component {
         })
         
       }
-
+      //sends credential offer upon pressing get transcript
       onGetTranscript = () => {
         axios.post('/api/offer').then((response) => {
             console.log(response);
@@ -113,7 +100,7 @@ export class App extends Component {
         console.log("redirect")
         
       }
-
+      //ui for the college website
     render() {
       return (
         <Router>
