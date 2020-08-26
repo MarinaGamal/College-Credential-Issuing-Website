@@ -9,7 +9,7 @@ import "./styles.css";
 import home from "./home.jpeg"
 import {BrowserRouter as Router,Link } from 'react-router-dom';
 
-var ngrok = "http://b42e2d162c0c.ngrok.io" //public url for connecting with the server
+var ngrok = "http://07c766e1c53b.ngrok.io" //public url for connecting with the server
 
 const fetchBooks = async () => {
     // Send GET request to 'books/all' endpoint
